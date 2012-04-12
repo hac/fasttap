@@ -12,11 +12,13 @@ It is superior to similar implementations in that it:
 Usage
 ------------
 
+```javascript
 element.fasttap(callback);
+```
 
 See example.html for example code.
 
 Feedback and Bugs
 -----------------
 
-Email hac@hactheplanet.com.
+Email <hac@hactheplanet.com>.
