@@ -13,12 +13,23 @@ Function.prototype.callAsync = function(obj)
 
 // fasttap adds a listener to simulate an instant onclick with only touch events
 
-HTMLElement.prototype.fasttap = function(callback, bubble)
+HTMLElement.prototype.fasttap = function(callback, options)
 {
-	this.fttouchstarted = false;
-	this.fttouchmoved = false;
-	this.ftcallback = callback;
-	this.ftbubble = bubble;
+    nullFunction = function () {};
+    
+    defaultOptions = { "propogate":true, "touchstart":nullFunction, "touchmove":nullFunction, "touchend":nullFunction };
+    if (options != null)
+    {
+        for (k in options)
+        {
+            defaultOptions[k] = options[k];
+        }
+    }
+    
+	this.ft_touchstarted = false;
+	this.ft_touchmoved = false;
+	this.ft_callback = callback;
+	this.ft_options = defaultOptions;
 	
 	this.addEventListener('touchstart', this.fasttap.touchstart);
 	this.addEventListener('touchmove', this.fasttap.touchmove);
@@ -27,25 +38,29 @@ HTMLElement.prototype.fasttap = function(callback, bubble)
 
 HTMLElement.prototype.fasttap.touchstart = function(e)
 {
-	this.fttouchstarted = true;
-	if (!this.ftbubble) { e.stopPropagation(); }
+	this.ft_touchstarted = true;
+	this.ft_options.touchstart.callAsync(this);
+	if (!this.ft_options.propogate) { e.stopPropagation(); }
 }
 
 HTMLElement.prototype.fasttap.touchmove = function(e)
 {
-	this.fttouchmoved = true;
-	if (!this.ftbubble) { e.stopPropagation(); }
+	this.ft_touchmoved = true;
+	this.ft_options.touchmove.callAsync(this);
+	if (!this.ft_options.propogate) { e.stopPropagation(); }
 }
 
 HTMLElement.prototype.fasttap.touchend = function(e)
 {
-	if (this.fttouchstarted && !this.fttouchmoved)
+    this.ft_options.touchend.callAsync(this);
+    
+	if (this.ft_touchstarted && !this.ft_touchmoved)
 	{
-		this.ftcallback.callAsync(this);
+		this.ft_callback.callAsync(this);
 	}
 
-	this.fttouchstarted = false;
-	this.fttouchmoved = false;
+	this.ft_touchstarted = false;
+	this.ft_touchmoved = false;
 	
-	if (!this.ftbubble) { e.stopPropagation(); }
+	if (!this.ft_options.propogate) { e.stopPropagation(); }
 }

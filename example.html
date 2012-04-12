@@ -13,6 +13,12 @@
 
 <script>
 document.getElementById("buttonA").fasttap(function() { alert("Hi, I'm " + this.id + "!")});
-document.getElementById("buttonB").fasttap(function() { alert("You clicked " + this.id + ".")}, true);
+document.getElementById("buttonB").fasttap(
+	function() { alert("You clicked " + this.id + ".")},
+	{
+		"propogate":false,
+		"touchmove":function() { this.style.backgroundColor = "pink"}
+	}
+	);
 document.getElementById("buttonC").fasttap(function() { this.style.backgroundColor = "white"});
 </script>
