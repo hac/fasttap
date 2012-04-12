@@ -12,7 +12,7 @@ It is superior to similar implementations in that it:
 Usage
 ------------
 
-element.fasttap(callback, propogate=true);
+element.fasttap(callback);
 
 See example.html for example code.
 
